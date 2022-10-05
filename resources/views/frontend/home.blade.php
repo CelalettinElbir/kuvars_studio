@@ -1,5 +1,5 @@
 @extends('frontendLayout.master')
-
+@include('frontendLayout.frontNav')
 
 @section('content')
 
@@ -11,11 +11,6 @@
                     <h1 class="mb-5"><span>We love</span> <span class="d-block">architecture</span> <span class="d-block">&
                             interior design</span></h1>
 
-                    {{-- <div class="play-vid">  
-                    <a href="https://www.youtube.com/watch?v=mwtbEGNABWU" class="play glightbox">
-                        <span class="icon-play"></span>
-                    </a>
-                </div> --}}
 
                     <div class="intro-desc">
                         <div class="line"></div>

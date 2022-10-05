@@ -1,1 +1,1 @@
-import './bootstrap';
+import "../../public/js/owl.carousel";

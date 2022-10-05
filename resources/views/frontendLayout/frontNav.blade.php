@@ -1,4 +1,4 @@
-<div class="site-mobile-menu site-navbar-target" >
+<div class="site-mobile-menu site-navbar-target">
     <div class="site-mobile-menu-header">
         <div class="site-mobile-menu-close">
             <span class="icofont-close js-menu-toggle"></span>
@@ -7,21 +7,22 @@
     <div class="site-mobile-menu-body"></div>
 </div>
 
-<nav class="site-nav" >
-    <div class="container " >
-        <div class="site-navigation" >
+<nav class="site-nav @yield('navbarColor')">
+    <div class="container ">
+        <div class="site-navigation">
             <a href="index.html" class="logo m-0 float-start">Kuvar<span class="text-primary">Studio</span> </a>
 
             <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-start">
                 <li class="active"><a href="index.html">Menü</a></li>
-                <li >
-                    <a href="projects.html">Projelerimiz</a>
-            
+                <li>
+                    <a href="{{ route('projects.index') }}">Projelerimiz</a>
+
                 </li>
                 <li><a href="about.html">Hakkımızda</a></li>
                 <li><a href="contact.html">İletişim</a></li>
             </ul>
 
+    
 
 
             <a href="#"

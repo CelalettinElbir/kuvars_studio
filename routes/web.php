@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\ProjectController;
 use App\Http\Controllers\admin\adminAuthController;
 use App\Http\Controllers\admin\adminPageController;
+use App\Http\Controllers\FrontprojectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,6 @@ use App\Http\Controllers\admin\adminPageController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-// Route::controller(ProjectController::class)->prefix("project")->group(function () {
-
-//     Route::get('/', 'index');
-// });
 
 
 // -----------------------------------------------ADMİN------------------------------------------------------//
@@ -43,11 +40,28 @@ Route::controller(adminPageController::class)->prefix("admin")->name("admin.")->
 });
 
 
+route::controller(FrontprojectController::class)->prefix("/projects")->name("projects.")->group(function () {
+
+    route::get("/index", "index")->name("index");
+    route::get("/{Project}",'show')->name("detail");
+    route::get("/{Project}/vr", "showVr")->name("vr");  
+    
+});
 
 
 
-Route::prefix('admin')->group(function () {
-    Route::resource('projects', ProjectController::class);
+
+route::controller(ProjectController::class)->prefix("admin/projects")->name("admin.projects.")->group(function () {
+
+    route::get("/index", "index")->name("index");
+    route::get("/create", "create")->name("create");
+    route::delete("/{Project}", "destroy")->name("delete");
+    route::post("/", "store")->name("store");
+    route::get("/create", "create")->name("create");
+    route::get("{Project}/edit", "edit")->name("edit");
+    route::PUT("/{Project}", "update")->name("update");
+
+    
 });
 
 

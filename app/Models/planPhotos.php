@@ -5,7 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class project_images extends Model
+class planPhotos extends Model
 {
     use HasFactory;
+
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
 }

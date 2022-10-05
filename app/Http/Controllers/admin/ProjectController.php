@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+
+use App\Models\project_photos;
+use App\Http\Controllers\Controller;
+use App\Models\planPhotos;
+use Intervention\Image\Facades\Image;
 
 class ProjectController extends Controller
 {
@@ -15,8 +19,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view("backend.project.index");
+        $Projects = Project::all();
 
+        return view("backend.project.index", compact("Projects"));
     }
 
     /**
@@ -27,7 +32,6 @@ class ProjectController extends Controller
     public function create()
     {
         return view("backend.project.create");
-
     }
 
     /**
@@ -38,31 +42,56 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->hasFile('img_path'));
+        // dd($request->file('file_path')[0]->getClientOriginalName());
         $request->validate([
             'project_name' => 'required',
-            'body' => 'required',
             'html' => 'required',
-            'image_path' =>'required'
-
         ]);
 
-    
+
+        $Project = new Project();
+        $Project->name = $request->project_name;
+        $Project->project_html = $request->html;
+        $Project->save();
+
+        if ($request->hasFile("file_path")) {
+
+            foreach ($request->file('file_path') as $item) {
+                $image = new project_photos();
 
 
-        // foreach ($request->file('file_path') as $item) {
-        //     $image = new companyimages();
+                $ogImage = Image::make($item->path());
+                $ogImage->resize(720, 720);
+                $imageName =  uniqid() . "." . $item->getClientOriginalExtension();
+                $ogImage->save(public_path("images/resource/") . $imageName);
+                $image->project_id = $Project->id;
+                $image->image_path =  $imageName;
+
+                $image->save();
+            };
+        }
+
+        if ($request->hasFile("img_path")) {
+
+            foreach ($request->file('img_path') as $item) {
+                $image = new planPhotos();
 
 
-        //     $ogImage = Image::make($item->path());
-        //     $ogImage->resize(720, 720);
-        //     // $thImage = $ogImage->save(public_path("/images/resource/") . $item->getClientOriginalName());
-        //     $imageName =  uniqid() . "." . $item->getClientOriginalExtension();
-        //     $ogImage->save(public_path("/images/resource/") . $imageName);
-        //     $image->company_id = $company->id;
-        //     $image->url =  $imageName;
-        //     $image->save();
-        // };
+                $ogImage = Image::make($item->path());
+                $ogImage->resize(720, 720);
+                // $ogImage->aspectRatio();
+                $imageName =  uniqid() . "." . $item->getClientOriginalExtension();
+                $ogImage->save(public_path("plan/photos/") . $imageName);
+                $image->project_id = $Project->id;
+                $image->img_path =  $imageName;
+
+                $image->save();
+            };
+        }
+
+
+        return redirect()->route("admin.projects.index")->with("message", "Proje başarıyla oluşturuldu.");
     }
 
     /**
@@ -82,9 +111,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $project = Project::find($id);
+        return view("backend.project.edit", compact("project"));
     }
 
     /**
@@ -94,9 +124,14 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($id);
+        $project->name  = $request->project_name;
+        $project->project_html = $request->html;
+
+        $project->save();
+        return redirect()->route("admin.projects.index")->with("message", "başarıyla güncellendi");
     }
 
     /**
@@ -105,8 +140,13 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
+
     {
-        //
+        // dd($project);
+        // Project::findOrFail($project->id)->delete();
+        $deletedItem = Project::find($id);
+        $deletedItem->delete();
+        return redirect()->route("admin.projects.index")->with("message","başarıyla silindi");
     }
 }

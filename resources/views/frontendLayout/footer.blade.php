@@ -81,7 +81,7 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
-
+<script src="{{asset("archiark-main")}}/js/ajax.js"></script>
 <script src="{{asset("archiark-main")}}/js/bootstrap.bundle.min.js"></script>
 <script src="{{asset("archiark-main")}}/js/tiny-slider.js"></script>
 <script src="{{asset("archiark-main")}}/js/aos.js"></script>
@@ -89,6 +89,8 @@
 <script src="{{asset("archiark-main")}}/js/navbar.js"></script>
 <script src="{{asset("archiark-main")}}/js/counter.js"></script>
 <script src="{{asset("archiark-main")}}/js/custom.js"></script>
+@stack('js')
+
 </body>
 
 </html>

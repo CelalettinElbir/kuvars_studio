@@ -1,5 +1,5 @@
 @include('frontendLayout.head')
-@include('frontendLayout.navbar')
+{{-- @include('frontendLayout.frontNav') --}}
 @yield('content')
 
 @include('frontendLayout.footer')
